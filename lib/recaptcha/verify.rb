@@ -35,14 +35,14 @@ module Recaptcha
         answer, error = recaptcha.body.split.map { |s| s.chomp }
         unless answer == 'true'
           flash[:recaptcha_error] = if defined?(I18n)
-            I18n.translate("recaptcha.errors.#{error}", {:default => error})
+            I18n.translate("recaptcha.errors.#{error}", :default => error)
           else
             error
           end
 
           if model
             message = "Word verification response is incorrect, please try again."
-            message = I18n.translate('recaptcha.errors.verification_failed', {:default => message}) if defined?(I18n)
+            message = I18n.translate('recaptcha.errors.verification_failed', :default => message) if defined?(I18n)
             model.errors.add attribute, options[:message] || message
           end
           return false
@@ -53,7 +53,7 @@ module Recaptcha
       rescue Timeout::Error
         if Recaptcha.configuration.handle_timeouts_gracefully
           flash[:recaptcha_error] = if defined?(I18n)
-            I18n.translate('recaptcha.errors.recaptcha_unreachable', {:default => 'Recaptcha unreachable.'})
+            I18n.translate('recaptcha.errors.recaptcha_unreachable', :default => 'Recaptcha unreachable.')
           else
             'Recaptcha unreachable.'
           end
